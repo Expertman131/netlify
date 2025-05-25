@@ -11,9 +11,7 @@ import {
 // Netlify serverless function обработчик
 export default async (req) => {
   try {
-    // Для stateless MCP используем только POST запросы
     if (req.method === "POST") {
-      // Конвертируем объект Request в Node.js Request
       const { req: nodeReq, res: nodeRes } = toReqRes(req);
       const server = getServer();
 
@@ -55,9 +53,7 @@ export default async (req) => {
   }
 };
 
-// Функция для создания MCP сервера
 function getServer() {
-  // Инициализируем MCP Server
   const server = new McpServer(
     {
       name: "beauty-tracker-mcp",
@@ -66,7 +62,6 @@ function getServer() {
     { capabilities: { logging: {} } }
   );
 
-  // Добавляем инструмент для получения информации о проекте
   server.tool(
     "get-project-info",
     "Получает основную информацию о проекте Beauty Tracker",
@@ -94,7 +89,6 @@ function getServer() {
     }
   );
 
-  // Добавляем ресурс с документацией
   server.resource(
     "beauty-tracker-docs",
     "beauty://docs",
@@ -105,12 +99,12 @@ function getServer() {
           {
             uri: "beauty://docs",
             text: `Beauty Tracker - система управления салонами красоты
-              
+
 Основные компоненты:
 - Фронтенд: React, Next.js, TailwindCSS, shadcn/ui
 - Бэкенд: Supabase (PostgreSQL, Auth, Edge Functions)
 - Интеграции: Внешние API (Wazzup, Telegram, Email)
-              
+
 Основная документация доступна через проект.`,
           },
         ],
@@ -121,7 +115,6 @@ function getServer() {
   return server;
 };
 
-// Конфигурация для маршрутизации
 export const config = {
   path: "/mcp"
 };
